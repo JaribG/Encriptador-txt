@@ -20,4 +20,4 @@ Entre las funcionalidades se encuentra 🕹
 
 **gusteyPruebe()**
 
-<img src="./img/coding.gif" alt=""/>
+<img src="./img/coding.gif" alt="a"/>
