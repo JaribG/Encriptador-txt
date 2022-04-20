@@ -8,6 +8,7 @@
 
 body{
     background-color: #E5E5E5;
+    margin: 0;
 }
 .container{
     margin: 40px 10vh 40px 10vh;
@@ -156,6 +157,27 @@ section.logo{
     font-family: var(--tipo-letra);
     font-size: 20px;
     font-weight: bold;
+}
+
+.footer{
+    height: 80px;
+    background-color: var(--main-azul-color);
+    width: 100%;
+    margin-top: 30px;
+    border-radius: 10px;
+}
+.footer div{
+    display: block;
+    height: 20px;
+    width: 200px;
+    padding-top: 10px;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+.footer div h4{
+    font-family: var(--tipo-letra);
+    color: #fff;
 }
 
 

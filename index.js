@@ -1,7 +1,7 @@
 'use strict'
 
-//Una alerta Personalizada 
-function alertPersonalizada(title, descripcion,tiempo,color) {
+//Una alerta Personalizada para mostrar mensajes  
+function alertPersonalizada(title, descripcion, tiempo, color) {
     let timerInterval
     Swal.fire({
         title: title,
@@ -17,8 +17,8 @@ function alertPersonalizada(title, descripcion,tiempo,color) {
     })
 }
 
-//Accedemos al dom y guardamos dicha info necesaria en en variables
-let recolectoDatos = document.getElementById('entrada')
+//Accedemos al dom y guardamos dicha info necesarias
+let inputEntrada = document.getElementById('entrada')
 let InformacionNoEcontrada = document.getElementById('informacion')
 let containerInsertarEncriptado = document.getElementById('dataencriptada')
 let containerTxtEncriptado = document.getElementById('information-salida')
@@ -37,18 +37,21 @@ let btnDesencriptar = document.getElementById('btn-Desencriptar')
 
 //Function encriptadora
 function txtEncriptarOdesencripatar(vocales) {
+    //Si vocales viene true pues el txt esta encriptado 
     if (vocales) {
-        while (recolectoDatos.value.match("ai") != null || recolectoDatos.value.match("enter") != null || recolectoDatos.value.match("imes") != null || recolectoDatos.value.match("ober") != null || recolectoDatos.value.match("ufat") != null) {
-            recolectoDatos.value = recolectoDatos.value.replace("ai", "a");
-            recolectoDatos.value = recolectoDatos.value.replace("enter", "e");
-            recolectoDatos.value = recolectoDatos.value.replace("imes", "i");
-            recolectoDatos.value = recolectoDatos.value.replace("ober", "o");
-            recolectoDatos.value = recolectoDatos.value.replace("ufat", "u");
+        //Desencriptamo el txt
+        while (inputEntrada.value.match("ai") != null || inputEntrada.value.match("enter") != null || inputEntrada.value.match("imes") != null || inputEntrada.value.match("ober") != null || inputEntrada.value.match("ufat") != null) {
+            inputEntrada.value = inputEntrada.value.replace("ai", "a");
+            inputEntrada.value = inputEntrada.value.replace("enter", "e");
+            inputEntrada.value = inputEntrada.value.replace("imes", "i");
+            inputEntrada.value = inputEntrada.value.replace("ober", "o");
+            inputEntrada.value = inputEntrada.value.replace("ufat", "u");
 
-            containerInsertarEncriptado.innerHTML = recolectoDatos.value
+            containerInsertarEncriptado.innerHTML = inputEntrada.value
         }
     } else {
-        let data = recolectoDatos.value
+        //Aqui dividimos el txt y las vocales las cambiamos por el txt encriptado
+        let data = inputEntrada.value
         let dividor = data.split('')
         let txtEncriptado = []
 
@@ -67,111 +70,99 @@ function txtEncriptarOdesencripatar(vocales) {
             }
             txtEncriptado.push(dividor[i]);
         }
-        recolectoDatos.value = txtEncriptado.join('')
-        containerInsertarEncriptado.innerHTML = recolectoDatos.value
+        inputEntrada.value = txtEncriptado.join('')
+        containerInsertarEncriptado.innerHTML = inputEntrada.value
 
     }
 
 }
 
 
+//Esta Function se encarga de la validacion 
 function validacionForm(e) {
 
-    //Esto evalua la expresion dada con el texto escrito
-
-    let ExprecionAcept = /[A-Z]/g
-    let filtro = ExprecionAcept.test(recolectoDatos.value)
+    let soloMayusculas = /[A-Z]/g
+    let filtro = soloMayusculas.test(inputEntrada.value)
 
     let encripOdesencrip = /ai|enter|imes|ober|ufat/g
-    let respuesta = encripOdesencrip.test(recolectoDatos.value)
+    let estaEncripRespuesta = encripOdesencrip.test(inputEntrada.value)
 
 
-
-    recolectoDatos.addEventListener('keydown', (e) => {
-        //Si el txt escrito es valido segun la exprecion dada
+    //Si teclendo tratas de ingresar una mayuscula  
+    inputEntrada.addEventListener('keydown', (e) => {
+        console.log(e.key.length == 1)
         if (e.key.length == 1) {
-            if (filtro != ExprecionAcept.test(e.key)) {
-                alertPersonalizada('Auto close!', 'Solo letras minúsculas y sin acentos ;-)', 2000,'red')
+            if (filtro != soloMayusculas.test(e.key)) {
+                alertPersonalizada('Auto close!', 'Solo letras minúsculas y sin acentos ;-)', 2000, 'red')
 
             }
         }
     })
 
-    if (e.target == btnEncriptar) {
-        if (recolectoDatos.value == '') {
-            alertPersonalizada('Auto close!', 'Por favor ingrese texto en el input :-(', 2000,'red')
-        } else if (respuesta) {
-            alertPersonalizada('Auto close!', 'Wow; alparecer texto ya esta encriptado', 2000,'red')
+    //Solo acedera a unas de estas comprobacion si clickas en los btn
+    if (e.target == btnEncriptar ||e.key == 'Enter') {
+        if (inputEntrada.value == '') {
+            alertPersonalizada('Auto close!', 'Por favor ingrese texto en el input :-(', 2000, 'red')
+        } else if (estaEncripRespuesta) {
+            alertPersonalizada('Auto close!', 'Eureka; alparecer el texto ya esta encriptado, utilize el btn desencriptar', 2000, 'red')
         } else (
-            textoEncriptar(true)
+            llamdoDeEncriptado(true)
         )
     } else if (e.target == btnDesencriptar) {
-        if (recolectoDatos.value == '') {
-            alertPersonalizada('Auto close!', 'Por favor ingrese texto en el input :-(', 2000,'red')
-        }else if (!respuesta) {
-            alertPersonalizada('Auto close!', 'Este texto No esta encriptado :-(', 2000,'red')
-        }else (
-            textoEncriptar(false)
+        if (inputEntrada.value == '') {
+            alertPersonalizada('Auto close!', 'Por favor ingrese texto en el input :-(', 2000, 'red')
+        } else if (!estaEncripRespuesta) {
+            alertPersonalizada('Auto close!', 'Este texto No esta encriptado :-(  utilize el btn Desencriptar', 2000, 'red')
+        } else (
+            llamdoDeEncriptado(false)
         )
     }
+
 }
 
 //Si clickeas o escribes cualquier cosa en el input, se llamara la funcion
-let interval;
-recolectoDatos.addEventListener('click',() =>{
-        interval = window.setInterval(() => {
-            console.log('estamos llamando varias veces la funcion')
-             validacionForm('na')  
-         }, 300); 
+inputEntrada.addEventListener('keydown', (e) => {
+    validacionForm(e)
 })
-let clickaste = true
-recolectoDatos.addEventListener('blur',() =>{
-    console.log('entro')
-    clearInterval(interval)
+inputEntrada.addEventListener('click', () => {
+    validacionForm('')
 })
+
+//Llamamos nuestra fuction validacion con los eventos click
 btnEncriptar.addEventListener('click', validacionForm)
 btnDesencriptar.addEventListener('click', validacionForm)
 
-//Aqui encriptamos el txt y los volvemos visible
-function textoEncriptar(btn) {
+
+//Aqui jugamos un poco con los eventos despues de llamar nuestra encriptadora
+function llamdoDeEncriptado(btn) {
     //Contiene esta clase y agrega y elimina la class
     let info = InformacionNoEcontrada.classList.toggle('eliminado')
-    let estaEncriptado = false
 
-    if (info) {
-        containerTxtEncriptado.classList.toggle('eliminado')
-        btnCopiar.classList.toggle('eliminado')
+    containerTxtEncriptado.classList.toggle('eliminado')
+    btnCopiar.classList.toggle('eliminado')
 
 
-        if (btn) {
-            txtEncriptarOdesencripatar(false)
+    if (btn) {
+        txtEncriptarOdesencripatar(false)
 
-        } else if (!btn) {
-            txtEncriptarOdesencripatar(true)
-
-        }
-
-
-        //Despues de enviar el txt reseteamos el form
-        document.getElementById('formulario').reset()
-
-        //Si intentas volver a encriptar un txt eliminamos el txt que ya se habia enviado 
-        let devueltaAEncriptar = () => {
-            if (info) {
-                console.log('entro')
-                InformacionNoEcontrada.classList.remove('eliminado')
-                containerTxtEncriptado.classList.add('eliminado')
-                btnCopiar.classList.add('eliminado')
-            }
-        }
-        recolectoDatos.addEventListener('click', devueltaAEncriptar)
-
-
-
-
+    } else if (!btn) {
+        txtEncriptarOdesencripatar(true)
 
     }
 
+    //Despues de enviar el txt reseteamos el form
+    document.getElementById('formulario').reset()
+
+  //en este callback si clickas en el input de entrada automaticamente borra solamente si hay un texto ya encriptado en el input de salida
+    let devueltaAEncriptar = () => {
+        if (info) {
+            console.log('entro')
+            InformacionNoEcontrada.classList.remove('eliminado')
+            containerTxtEncriptado.classList.add('eliminado')
+            btnCopiar.classList.add('eliminado')
+        }
+    }
+    inputEntrada.addEventListener('click', devueltaAEncriptar)
 
 }
 
@@ -186,17 +177,17 @@ function copiarAlPortapapeles() {
     dataEncriptada.setSelectionRange(0, 99999)
     let copiado = document.execCommand('copy')
     if (copiado) {
-        alertPersonalizada('Auto close!', 'Texto copiado Satifactoriamente |=)', 1000,'#0A3871')
+        alertPersonalizada('Auto close!', 'Texto copiado Satifactoriamente |=)', 1000, '#0A3871')
     }
 
     //eliminamos el txt encriptado una vez que se clickea en recoletardatos
     let devueltaAEncriptar = (e) => {
         InformacionNoEcontrada.classList.remove('eliminado')
         containerTxtEncriptado.classList.add('eliminado')
-        btnCopiar.classList.add('eliminado')
+        btnCopiar.classList.add('eliminado') 
     }
 
-    recolectoDatos.addEventListener('click', devueltaAEncriptar)
+    inputEntrada.addEventListener('click', devueltaAEncriptar)
 
 }
 
