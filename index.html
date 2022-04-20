@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encriptador de Texto</title>
+    <link rel="stylesheet" href="./styles.css">
+</head>
+
+<body>
+    <div class="container">
+
+        <div class="container-izquierda">
+            <section class="logo">
+                <img src="./Img/Logo.svg" alt="">
+            </section>
+
+            <section class="contenido-izquierda">
+
+                <div class="formulario">
+                    <form action="" name="formulario" id="formulario">
+                        <textarea name="entrada" id="entrada" placeholder="Ingrese el texto aqui" required></textarea>
+                        <br>
+                    </form>
+                </div>
+
+                <div class="btn-sms">
+                    <div class="sms-indicacion">
+                        <img src="./Img/bi_exclamation-circle-fill.svg" alt="">
+                        <h4>Solo letras minúsculas y sin acentos</h4>
+                    </div>
+
+
+                    <button type="submit" id="btn-Encriptar" aria-required="true">Encriptar</button>
+                    <button id="btn-Desencriptar">Desencriptar</button>
+                </div>
+
+            </section>
+        </div>
+
+
+        <div class="container-derecha">
+            <div class="information" id="informacion">
+                <section class="img-default-derecha">
+                    <img src="./Img/Muñeco.svg" alt="">
+                </section>
+
+                <section class="mensaje-No-encontrado">
+                    <h3>Ningún mensaje fue encontrado</h3>
+                    <p>Ingresa el texto que desees encriptar o desencriptar.</p>
+                </section>
+            </div>
+
+            <div class="container-information-salida eliminado" id="information-salida">
+
+                <div id="container-encriptado" class="container-encriptado">
+
+                    <textarea class='dato-encriptado' id="dataencriptada"></textarea>
+                    
+                </div>
+
+                <button class="btn-copiar eliminado" id="btn-copiar">Copiar</button>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.all.min.js"></script>
+    <script src="./index.js"></script>
+</body>
+
+</html>
+
+
+
+
+
+
